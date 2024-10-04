@@ -38,3 +38,4 @@ There's few rules of contributing:
 - The commit must take review first before merging into main branch.
 
 ## Our discord server
+[Join our discord](https://discord.gg/pqymdG3pBa)
