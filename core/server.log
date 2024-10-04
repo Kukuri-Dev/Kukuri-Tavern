@@ -1,0 +1,14 @@
+[info] [1mStarting [38;2;255;215;000mKukuri Tervan[0m [1mV0.0.1[0m[0m
+[info] Starting [1m[38;2;255;248;220mHTTP Server[0m, binding port to server
+[error] Failed to bind port 443 to HTTP Server.
+[warning] Failed to starting [1m[38;2;255;248;220mHTTP Server[0m, please run an external service.
+[warning] Failed to connect [1m[38;2;255;248;220mMySQL Server[0m, please check server configuration.
+[info] [1mStarting [38;2;255;215;000mKukuri Tavern[0m [1mV0.0.1[0m[0m
+[info] Starting [1m[38;2;255;248;220mHTTP Server[0m, binding port to server
+[error] Failed to bind port 443 to HTTP Server.
+[warning] Failed to starting [1m[38;2;255;248;220mHTTP Server[0m, please run an external service.
+[info] [1mStarting [38;2;255;215;000mKukuri Tavern[0m [1mV0.0.1[0m[0m
+[info] Starting [1m[38;2;255;248;220mHTTP Server[0m, binding port to server
+[error] Failed to bind port 443 to HTTP Server.
+[warning] Failed to starting [1m[38;2;255;248;220mHTTP Server[0m, please run an external service.
+[warning] Failed to connect [1m[38;2;255;248;220mMySQL Server[0m, please check server configuration.
