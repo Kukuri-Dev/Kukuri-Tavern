@@ -15,7 +15,7 @@ $ vcpkg install fmt enet cpp-httplib libmariadb magic-enum openssl sigslot spdlo
 - Go to build partition then run this command
   - replace `<your vcpkg path>` to your vcpkg `installed directory`
 ```
-cmake -DCMAKE_TOOLCHAIN_FILE=<your vcpkg path>/scripts/buildsystems/vcpkg.cmake -DCMAKE_PREFIX_PATH=<your vcpkg path>/installed/x64-windows ..
+$ cmake -DCMAKE_TOOLCHAIN_FILE=<your vcpkg path>/scripts/buildsystems/vcpkg.cmake -DCMAKE_PREFIX_PATH=<your vcpkg path>/installed/x64-windows ..
 ```
 
 # Building
