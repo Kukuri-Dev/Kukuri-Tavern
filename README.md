@@ -1,12 +1,11 @@
 # Kukuri Tavern
 > A Growtopia Private Server made in C++, well-structured and reliable code.
 
-# Requirements
+### Requirements
 - [vcpkg](https://vcpkg.io/en/)
 - [CMake](https://cmake.org/download/)
 
-
-# Setup
+## Setup
 To start build the source, first you'll need to follow this step
 - Firstly, You need to clone [enet](https://github.com/lsalzman/enet/tree/be7cefa39cd23dfc5919b20a12d8e25a9f3a2419), [sqlpp11](https://github.com/rbock/sqlpp11/tree/9412851408e7bc290732b56d7a5e76c6942d49d8), [sigslot](https://github.com/palacaze/sigslot/tree/33802bb3e94c4dfe07bd41b537b36806f94c3e3a), [curl](https://github.com/curl/curl) into the libraries partition
 - Second, You'll need to install the requirements package by using this command below:
@@ -19,11 +18,19 @@ $ vcpkg install fmt enet cpp-httplib libmariadb magic-enum openssl sigslot spdlo
 $ cmake -DCMAKE_TOOLCHAIN_FILE=<your vcpkg path>/scripts/buildsystems/vcpkg.cmake -DCMAKE_PREFIX_PATH=<your vcpkg path>/installed/x64-windows ..
 ```
 
-# Building
+## Building
 Next step, If you want to build the project, You'll need to run `<any-type>-build.bat` file to build the project
 - Dont forgot to switch to the (`Release, x64`)
 
-# Contributing
+## Database
+Database that we currently use is MySQL, We will change it later
+
+## Todo
+- [ ] Change the Database
+- [ ] Login page
+- [ ] Caching for holding world offers
+
+## Contributing
 Any contributions are welcome.
 
 There's few rules of contributing:
