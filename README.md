@@ -8,10 +8,10 @@
 
 # Setup
 To start build the source, first you'll need to follow this step
-- Firstly, You need to clone [enet](https://github.com/lsalzman/enet/tree/be7cefa39cd23dfc5919b20a12d8e25a9f3a2419), [sqlpp11](https://github.com/rbock/sqlpp11/tree/9412851408e7bc290732b56d7a5e76c6942d49d8), [sigslot](https://github.com/palacaze/sigslot/tree/33802bb3e94c4dfe07bd41b537b36806f94c3e3a) into the libraries partition
+- Firstly, You need to clone [enet](https://github.com/lsalzman/enet/tree/be7cefa39cd23dfc5919b20a12d8e25a9f3a2419), [sqlpp11](https://github.com/rbock/sqlpp11/tree/9412851408e7bc290732b56d7a5e76c6942d49d8), [sigslot](https://github.com/palacaze/sigslot/tree/33802bb3e94c4dfe07bd41b537b36806f94c3e3a), [curl](https://github.com/curl/curl) into the libraries partition
 - Second, You'll need to install the requirements package by using this command below:
 ```
-$ vcpkg install fmt enet cpp-httplib libmariadb magic-enum openssl sigslot spdlog sqlite3
+$ vcpkg install fmt enet cpp-httplib libmariadb magic-enum openssl sigslot spdlog sqlite3 curl
 ```
 - Go to build partition then run this command
   - replace `<your vcpkg path>` to your vcpkg `installed directory`
