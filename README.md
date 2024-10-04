@@ -37,5 +37,5 @@ There's few rules of contributing:
 - Code must match the existing code style. Please make sure before submiting.
 - The commit must take review first before merging into main branch.
 
-## Our discord server
+### Our discord server
 [Join our discord](https://discord.gg/pqymdG3pBa)
