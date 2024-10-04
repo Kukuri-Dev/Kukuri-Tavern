@@ -28,6 +28,3 @@ Any contributions are welcome.
 There's few rules of contributing:
 - Code must match the existing code style. Please make sure before submiting.
 - The commit must take review first before merging into main branch.
-=======
-
->>>>>>> e9c6b01e06a3302bbe8a8f96301ced25a2e6aa39
