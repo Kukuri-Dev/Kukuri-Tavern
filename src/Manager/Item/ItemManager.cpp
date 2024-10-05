@@ -28,7 +28,7 @@ bool ItemManager::Serialize() {
             break; //Unsupported Items.dat
     }
 
-    Logger::Print(INFO, "{} >> Serialized items.dat with {} items loaded.", fmt::format(fmt::emphasis::bold | fg(fmt::color::cornsilk), "ItemManager"), this->GetItemsLoaded());
+    Logger::Print(eLoggerType::INFO, "{} >> Serialized items.dat with {} items loaded.", fmt::format(fmt::emphasis::bold | fg(fmt::color::cornsilk), "ItemManager"), this->GetItemsLoaded());
     return true;
 }
 void ItemManager::Encode() {

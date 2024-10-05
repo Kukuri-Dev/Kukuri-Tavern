@@ -40,7 +40,6 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
 
 set(CMAKE_TOOLCHAIN_FILE "${CMAKE_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "Vcpkg toolchain file")
 
-find_package(CURL REQUIRED)
 find_package(fmt REQUIRED)
 find_package(magic_enum REQUIRED)
 find_package(spdlog REQUIRED)
@@ -54,7 +53,6 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
-    CURL::libcurl
     fmt::fmt
     magic_enum::magic_enum
     spdlog::spdlog

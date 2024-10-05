@@ -1,6 +1,7 @@
-#include <Manager/Database/Database.hpp>
+﻿#include <Manager/Database/Database.hpp>
+#include <Manager/Database/DatabaseInitializer.hpp>
 #include <config.hpp>
-#include <sqlpp11/mysql/connection.h>
+#include <sqlpp11/sqlite3/connection.h> 
 #include <Logger/Logger.hpp>
 
 Database g_database;
@@ -10,29 +11,55 @@ Database* GetDatabase() {
 
 bool Database::Connect() {
     try {
-        sqlpp::mysql::global_library_init();
-        m_pConnection = new sqlpp::mysql::connection{ Configuration::GetMySQL() };
-        Logger::Print(INFO, "Initializing {}, connecting to the server. [{} | {}]", 
-            fmt::format(fmt::emphasis::bold | fg(fmt::color::cornsilk), "Database"),
-            fmt::format(fmt::emphasis::bold | fg(fmt::color::cornsilk), "{}", m_pConnection->get_config()->user),
-        fmt::format(fmt::emphasis::bold | fg(fmt::color::cornsilk), "{}", m_pConnection->get_config()->database));
-        
+        auto config = Configuration::GetSQLite();
+
+        Logger::Print(eLoggerType::INFO, "Current working directory: {}", std::filesystem::current_path().string());
+        Logger::Print(eLoggerType::INFO, "Attempting to connect to database at: {}", config->sqliteDB);
+
+        auto dbPath = std::filesystem::path(config->sqliteDB);
+        if (!std::filesystem::exists(dbPath.parent_path())) {
+            Logger::Print(eLoggerType::WARNING, "Database directory does not exist: {}", dbPath.parent_path().string());
+            try {
+                std::filesystem::create_directories(dbPath.parent_path());
+                Logger::Print(eLoggerType::INFO, "Created database directory: {}", dbPath.parent_path().string());
+            }
+            catch (const std::filesystem::filesystem_error& e) {
+                Logger::Print(eLoggerType::EXCEPTION, "Failed to create database directory: {}", e.what());
+                return false;
+            }
+        }
+
+        m_pConnection = new sqlpp::sqlite3::connection{ config };
+
+        if (!DatabaseInitializer::Initialize(m_pConnection)) {
+            Logger::Print(eLoggerType::EXCEPTION, "Failed to initialize database schema");
+            return false;
+        }
+
+        Logger::Print(eLoggerType::INFO, "Successfully connected to database at: {}", config->sqliteDB);
+
         m_pPlayerTable = new PlayerTable(m_pConnection);
         return true;
     }
-    catch (const sqlpp::exception &e)   { return false; }
-    catch (...)                         { return false; }
-    return false;
+    catch (const sqlpp::exception& e) {
+        Logger::Print(eLoggerType::EXCEPTION, "SQLite connection error: {}", e.what());
+        return false;
+    }
+    catch (const std::exception& e) {
+        Logger::Print(eLoggerType::EXCEPTION, "General error: {}", e.what());
+        return false;
+    }
+    catch (...) {
+        Logger::Print(eLoggerType::EXCEPTION, "Unknown error occurred while connecting to database");
+        return false;
+    }
 }
 
-sqlpp::mysql::connection* Database::GetConnection() {
-    return this->m_pConnection;
-}
 void* Database::GetTable(eDatabaseTable table) {
     switch (table) {
-        case DATABASE_PLAYER_TABLE: return m_pPlayerTable;
-        default:
-            return nullptr;
+    case DATABASE_PLAYER_TABLE: return m_pPlayerTable;
+    default:
+        return nullptr;
     }
     return nullptr;
 }
