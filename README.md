@@ -26,7 +26,7 @@ Next step, If you want to build the project, You'll need to run `<any-type>-buil
 Database that we currently use is MySQL, We will change it later
 
 ## Todo
-- [ ] Change the Database
+- [X] Change the Database
 - [ ] Login page
 - [ ] Caching for holding world offers
 
