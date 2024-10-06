@@ -29,6 +29,7 @@ Database that we currently use is MySQL, We will change it later
 - [X] Change the Database
 - [ ] Login page
 - [ ] Caching for holding world offers
+- [ ] Fetch some API from my website
 
 ## Contributing
 Any contributions are welcome.
