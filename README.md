@@ -23,7 +23,7 @@ Next step, If you want to build the project, You'll need to run `<any-type>-buil
 - Dont forgot to switch to the (`Release, x64`)
 
 ## Database
-Database that we currently use is MySQL, We will change it later
+Database that we currently use is SQLite3 (With sqlpp11 lib)
 
 ## Todo
 - [X] Change the Database
