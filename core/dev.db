@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS PlayerDB (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    requestedName TEXT DEFAULT '',
+    tankIdName TEXT NOT NULL UNIQUE,
+    tankIdPass TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Index for faster lookups
+CREATE INDEX IF NOT EXISTS idx_tankIdName ON PlayerDB(tankIdName);
