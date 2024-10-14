@@ -10,7 +10,10 @@ public:
     static constexpr const char* GetVersion() { return "0.0.1"; }
 
     static std::string GetBaseHost() { return "127.0.0.1"; }
-    static uint16_t GetBasePort() { return 16000; }
+    static uint16_t GetBasePort() { return 17091; }
+
+    static std::string GetLoginUrl() { return "127.0.0.1"; }
+    static std::string GetMaintenance() { return "Server is under maintenance."; }
 
 public:
     static std::shared_ptr<sqlpp::sqlite3::connection_config> GetSQLite() {
@@ -18,15 +21,15 @@ public:
         std::filesystem::path dbPath = std::filesystem::current_path();
 
         if (std::filesystem::exists(dbPath / "dev.db")) {
-            pConfig->sqliteDB = (dbPath / "dev.db").string();
+            pConfig->path_to_database = (dbPath / "dev.db").string();
         }
 
         else if (std::filesystem::exists(dbPath.parent_path() / "dev.db")) {
-            pConfig->sqliteDB = (dbPath.parent_path() / "dev.db").string();
+            pConfig->path_to_database = (dbPath.parent_path() / "dev.db").string();
         }
 
         else {
-            pConfig->sqliteDB = (dbPath / "dev.db").string();
+            pConfig->path_to_database = (dbPath / "dev.db").string();
         }
 
         pConfig->flags = SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE;

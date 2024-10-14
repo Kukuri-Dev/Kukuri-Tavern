@@ -46,23 +46,34 @@ void HTTPServer::ServicePoll() {
         const std::string version = "4.67";
         std::string client_version = request.get_param_value("version");
 
+        std::string str;
         if (client_version == version) {
-            Logger::Print(INFO, "Version matched: {}", client_version); //DEBUG
-            //response.set_redirect("https://kukuri.xyz"); Testing redirect
-        }
-        else {
-            std::string str = "error|1000|Update is now available for your device. Go get it!\n";
-            str += "url|https://growtopiagame.com/Growtopia-Installer.exe\n";
-            str += fmt::format("port|{}\n", Configuration::GetBasePort());
-            str += "loginurl|https://kukuri.xyz\n";
+            Logger::Print(INFO, "Version matched: {}", client_version);
+
+            str = "server|localhost\n";
+            str += fmt::format("port|{}\n", Configuration::GetBasePort);
+            str += fmt::format("loginurl|{}\n", Configuration::GetLoginUrl);
             str += "type|1\n";
-            str += "#maint|Server is under maintenance.\n";
+            str += fmt::format("#maint|{}\n", Configuration::GetMaintenance);
             str += "meta|ignoremeta\n";
             str += "RTENDMARKERBS1001";
-
-            response.set_content(str, "text/html");
         }
-        });
+        else {
+            Logger::Print(WARNING, "Version mismatch: Client {} != Server {}", client_version, version);
+
+            str = "error|1000|Update is now available for your device. Go get it!\n";
+            str += "url|https://growtopiagame.com/Growtopia-Installer.exe\n";
+            str += fmt::format("port|{}\n", Configuration::GetBasePort());
+            str += fmt::format("loginurl|{}\n", Configuration::GetLoginUrl);
+            str += "type|1\n";
+            str += fmt::format("#maint|{}\n", Configuration::GetMaintenance);
+            str += "meta|ignoremeta\n";
+            str += "RTENDMARKERBS1001";
+        }
+
+        response.set_content(str, "text/html");
+        Logger::Print(INFO, "Response sent: \n{}", str);
+    });
 
     m_pServer->Get("/growtopia/cache*", [&](const httplib::Request& request, httplib::Response& response) {
         std::string url = fmt::format("https://ubistatic-a.akamaihd.net/{}", request.path);

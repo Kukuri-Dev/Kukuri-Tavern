@@ -12,11 +12,6 @@ To start build the source, first you'll need to follow this step
 ```
 $ vcpkg install fmt enet cpp-httplib libmariadb magic-enum openssl sigslot spdlog sqlite3
 ```
-- Go to build partition then run this command
-  - replace `<your vcpkg path>` to your vcpkg `installed directory`
-```
-$ cmake -DCMAKE_TOOLCHAIN_FILE=<your vcpkg path>/scripts/buildsystems/vcpkg.cmake -DCMAKE_PREFIX_PATH=<your vcpkg path>/installed/x64-windows ..
-```
 
 ## Building
 Next step, If you want to build the project, You'll need to run `<any-type>-build.bat` file to build the project
@@ -37,6 +32,9 @@ Any contributions are welcome.
 There's few rules of contributing:
 - Code must match the existing code style. Please make sure before submiting.
 - The commit must take review first before merging into main branch.
+
+### Credits to this people
+- RebillionXX for the source based : [GrowServer](https://github.com/RebillionXX/GrowtopiaServer)
 
 ### Our discord server
 [Join our discord](https://discord.gg/pqymdG3pBa)
