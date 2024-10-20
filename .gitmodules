@@ -1,0 +1,12 @@
+[submodule "libraries/enet"]
+	path = libraries/enet
+	url = https://github.com/lsalzman/enet.git
+	branch = be7cefa39cd23dfc5919b20a12d8e25a9f3a2419
+[submodule "libraries/sqlpp11"]
+	path = libraries/sqlpp11
+	url = https://github.com/rbock/sqlpp11
+	branch = 9412851408e7bc290732b56d7a5e76c6942d49d8
+[submodule "libraries/sigslot"]
+	path = libraries/sigslot
+	url = https://github.com/palacaze/sigslot
+	branch = 33802bb3e94c4dfe07bd41b537b36806f94c3e3a
