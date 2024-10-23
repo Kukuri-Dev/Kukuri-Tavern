@@ -73,6 +73,7 @@ size_t ServerPool::GetActiveWorlds() const {
     return ret;
 }
 
+/*
 void ServerPool::ServicePoll() {
     while (this->IsRunning()) {
     for (auto& [instanceId, pServer] : this->GetServers()) {
@@ -82,8 +83,14 @@ void ServerPool::ServicePoll() {
             if (!event.peer || !playerPool)
                 break;
 
+            if (!event.peer) {
+                Logger::Print(INFO, "Null peer detected");
+                break;
+            }
+
             switch (event.type) {
             case ENET_EVENT_TYPE_CONNECT: {
+                Logger::Print(INFO, "New connection attempt from {}", event.peer->address.host);
                 if (playerPool->GetPlayer(event.peer->connectID))
                     break;
                 Player* pAvatar = playerPool->NewPlayer(event.peer);
@@ -119,5 +126,129 @@ void ServerPool::ServicePoll() {
         }
         enet_host_service(pServer->GetHost(), nullptr, 1);
     }
+    }
+}
+*/
+void ServerPool::ServicePoll() {
+    while (this->IsRunning()) {
+        for (auto& [instanceId, pServer] : this->GetServers()) {
+            try {
+                while (enet_host_check_events(pServer->GetHost(), pServer->GetEvent())) {
+                    auto event = *pServer->GetEvent();
+                    auto playerPool = pServer->GetPlayerPool();
+
+                    if (!event.peer || !playerPool) {
+                        Logger::Print(WARNING, "Invalid peer or player pool");
+                        break;
+                    }
+
+                    switch (event.type) {
+                    case ENET_EVENT_TYPE_CONNECT: {
+                        Logger::Print(INFO, "New connection attempt from {}",
+                            static_cast<uint32_t>(event.peer->address.host));
+
+                        try {
+                            Player* pAvatar = playerPool->NewPlayer(event.peer);
+                            if (pAvatar) {
+                                pAvatar->OnConnect();
+                                Logger::Print(INFO, "Player successfully connected");
+                            }
+                            else {
+                                Logger::Print(WARNING, "Failed to create new player");
+                            }
+                        }
+                        catch (const std::exception& e) {
+                            Logger::Print(EXCEPTION, "Exception in connection handler: {}", e.what());
+                        }
+                    } break;
+
+                    case ENET_EVENT_TYPE_RECEIVE: {
+                        Player* pAvatar = playerPool->GetPlayer(event.peer->connectID);
+                        if (!pAvatar) {
+                            Logger::Print(WARNING, "Received packet from unknown player");
+                            break;
+                        }
+
+                        if (event.packet->dataLength < sizeof(IPacketType::m_packetType) + 1 ||
+                            event.packet->dataLength > 0x400) {
+                            Logger::Print(WARNING, "Invalid packet size: {}", event.packet->dataLength);
+                            enet_packet_destroy(event.packet);
+                            break;
+                        }
+
+                        try {
+                            auto messageType = *(int32_t*)event.packet->data;
+                            Logger::Print(INFO, "Received packet type: {}", messageType);
+
+                            switch (messageType) {
+                            case NET_MESSAGE_GENERIC_TEXT:
+                            case NET_MESSAGE_GAME_MESSAGE: {
+                                auto data = this->DataToString(
+                                    event.packet->data + sizeof(IPacketType::m_packetType),
+                                    event.packet->dataLength - sizeof(IPacketType::m_packetType)
+                                );
+
+                                if (data.find("protocol|") != std::string::npos) {
+                                    Logger::Print(DEBUG, "Processed text message: {}", data);
+
+                                    pServer->GetWorldPool()->SendToWorldSelect(pAvatar);
+
+                                    /*TextParse dialogData;
+                                    dialogData.Add("delayMS", "1000");
+                                    pAvatar->PlayerDialog::Send(DIALOG_TYPE_REGISTRATION, dialogData);
+
+                                    Logger::Print(DEBUG, "Sent world select and registration dialog");*/
+                                }
+                                else {
+                                    GetEventPool()->AddQueue(
+                                        data.substr(0, data.find('|')),
+                                        pAvatar,
+                                        pServer,
+                                        data,
+                                        TextParse(data),
+                                        nullptr
+                                    );
+                                }
+                            } break;
+                            default:
+                                Logger::Print(DEBUG, "Unknown message type: {}", messageType);
+                                break;
+                            }
+                        }
+                        catch (const std::exception& e) {
+                            Logger::Print(DEBUG, "Exception in packet handler: {}", e.what());
+                        }
+
+                        if (event.packet) {
+                            enet_packet_destroy(event.packet);
+                        }
+                    } break;
+
+                    case ENET_EVENT_TYPE_DISCONNECT: {
+                        try {
+                            Player* pAvatar = playerPool->GetPlayer(event.peer->connectID);
+                            if (pAvatar) {
+                                pAvatar->OnDisconnect();
+                                playerPool->RemovePlayer(event.peer->connectID);
+                                Logger::Print(INFO, "Player disconnected: {}", event.peer->connectID);
+                            }
+                        }
+                        catch (const std::exception& e) {
+                            Logger::Print(EXCEPTION, "Exception in disconnect handler: {}", e.what());
+                        }
+                    } break;
+
+                    default:
+                        Logger::Print(WARNING, "Unknown event type: {}",
+                            static_cast<int>(event.type));
+                        break;
+                    }
+                }
+                enet_host_service(pServer->GetHost(), nullptr, 1);
+            }
+            catch (const std::exception& e) {
+                Logger::Print(EXCEPTION, "Exception in main server loop: {}", e.what());
+            }
+        }
     }
 }
