@@ -27,6 +27,9 @@ public:
     template<typename T, typename std::enable_if_t<std::is_floating_point_v<T>, bool> = true>
     DialogBuilder* EmbedData(std::string name, T value);
 
+    DialogBuilder* AddRawText(const std::string& text);
+    DialogBuilder* AddQuickExit();
+
     DialogBuilder* AddCustomBreak();
     DialogBuilder* AddSpacer(eSizeType size = SMALL);
     DialogBuilder* SetCustomSpacing(int32_t x, int32_t y);
@@ -87,10 +90,7 @@ public:
         result.append(fmt::format("\nadd_checkicon|{}|{}|staticframe|{}|{}|{}", name, label, id, frame_message, enabled ? "1" : "0"));
         return *this;
     }
-    DialogBuilder add_quick_exit() {
-        result.append("\nadd_quick_exit|");
-        return *this;
-    }*/
+    */
 
 public:
     std::string Get() const { return m_result; }
