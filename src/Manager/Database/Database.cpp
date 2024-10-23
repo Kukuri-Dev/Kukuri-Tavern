@@ -1,4 +1,4 @@
-﻿#include <Manager/Database/Database.hpp>
+#include <Manager/Database/Database.hpp>
 #include <Manager/Database/DatabaseInitializer.hpp>
 #include <config.hpp>
 #include <sqlpp11/sqlite3/connection.h> 
@@ -14,9 +14,9 @@ bool Database::Connect() {
         auto config = Configuration::GetSQLite();
 
         Logger::Print(eLoggerType::INFO, "Current working directory: {}", std::filesystem::current_path().string());
-        Logger::Print(eLoggerType::INFO, "Attempting to connect to database at: {}", config->sqliteDB);
+        Logger::Print(eLoggerType::INFO, "Attempting to connect to database at: {}", config->path_to_database);
 
-        auto dbPath = std::filesystem::path(config->sqliteDB);
+        auto dbPath = std::filesystem::path(config->path_to_database);
         if (!std::filesystem::exists(dbPath.parent_path())) {
             Logger::Print(eLoggerType::WARNING, "Database directory does not exist: {}", dbPath.parent_path().string());
             try {
@@ -36,7 +36,7 @@ bool Database::Connect() {
             return false;
         }
 
-        Logger::Print(eLoggerType::INFO, "Successfully connected to database at: {}", config->sqliteDB);
+        Logger::Print(eLoggerType::INFO, "Successfully connected to database at: {}", config->path_to_database);
 
         m_pPlayerTable = new PlayerTable(m_pConnection);
         return true;
