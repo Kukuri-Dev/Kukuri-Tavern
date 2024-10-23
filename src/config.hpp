@@ -12,9 +12,6 @@ public:
     static std::string GetBaseHost() { return "127.0.0.1"; }
     static uint16_t GetBasePort() { return 17091; }
 
-    static std::string GetLoginUrl() { return "127.0.0.1"; }
-    static std::string GetMaintenance() { return "Server is under maintenance."; }
-
 public:
     static std::shared_ptr<sqlpp::sqlite3::connection_config> GetSQLite() {
         auto pConfig = std::make_shared<sqlpp::sqlite3::connection_config>();
