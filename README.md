@@ -1,6 +1,9 @@
 # Kukuri Tavern
 > A Growtopia Private Server made in C++, well-structured and reliable code.
 
+### Known Issue
+> After managing to solve the login issue, I need to make a World Selection before sending the Register Dialog.
+
 ### Requirements
 - [vcpkg](https://vcpkg.io/en/)
 - [CMake](https://cmake.org/download/)
@@ -37,7 +40,8 @@ There's few rules of contributing:
 - The commit must take review first before merging into main branch.
 
 ### Credits to this people
-- RebillionXX for the source based : [GrowServer](https://github.com/RebillionXX/GrowtopiaServer)
+- [RebillionXX](https://github.com/RebillionXX) for the source based : [GrowServer](https://github.com/RebillionXX/GrowtopiaServer)
+- [YoruAkio](https://github.com/YoruAkio) for helping me about Login System
 
 ### Our discord server
 [Join our discord](https://discord.gg/pqymdG3pBa)
