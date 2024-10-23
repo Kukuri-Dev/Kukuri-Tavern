@@ -1,5 +1,6 @@
 #include <Server/Server.hpp>
 #include <chrono>
+#include <Logger/Logger.hpp>
 
 Server::Server() : ENetServer{} {
     playerPool = std::make_shared<PlayerPool>();
@@ -11,8 +12,11 @@ Server::~Server() {
 }
 
 bool Server::Init(std::string url, uint16_t port, int peerCount) {
-    if (!this->ENetServer::Init(port, peerCount))
+    if (!this->ENetServer::Init(port, peerCount)) {
+        Logger::Print(EXCEPTION, "Failed to initialize ENet server on port {}", port);
         return false;
+    }
+    Logger::Print(INFO, "ENet server listening on port {}", port);
     return true;
 }
 std::string Server::GetUptime() const {
