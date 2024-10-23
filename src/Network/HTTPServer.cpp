@@ -43,35 +43,45 @@ void HTTPServer::ServicePoll() {
     m_pServer->Post("/growtopia/server_data.php", [&](const httplib::Request& request, httplib::Response& response) {
         Logger::Print(INFO, "A request from {} | {}", request.remote_addr, request.path);
 
-        const std::string version = "4.67";
+        for (const auto& header : request.headers) {
+            Logger::Print(INFO, "Header: {} = {}", header.first, header.second);
+        }
+
+        // Log request params
+        Logger::Print(INFO, "Request params:");
+        for (const auto& param : request.params) {
+            Logger::Print(INFO, "{} = {}", param.first, param.second);
+        }
+
+        const std::string version = "4.7"; //4.70
         std::string client_version = request.get_param_value("version");
 
         std::string str;
         if (client_version == version) {
             Logger::Print(INFO, "Version matched: {}", client_version);
 
-            str = "server|localhost\n";
-            str += fmt::format("port|{}\n", Configuration::GetBasePort);
-            str += fmt::format("loginurl|{}\n", Configuration::GetLoginUrl);
+            str = "server|127.0.0.1\n";
+            str += fmt::format("port|17091\n");
+            str += fmt::format("loginurl|login-skip.yoruakio.tech\n");
             str += "type|1\n";
-            str += fmt::format("#maint|{}\n", Configuration::GetMaintenance);
+            str += fmt::format("#maint|Server is under maintenance.\n");
             str += "meta|ignoremeta\n";
             str += "RTENDMARKERBS1001";
         }
         else {
             Logger::Print(WARNING, "Version mismatch: Client {} != Server {}", client_version, version);
 
-            str = "error|1000|Update is now available for your device. Go get it!\n";
+            str = "error|1000|`9Kukuri Tavern: `$Update is now available for your device. Go get it!\n";
             str += "url|https://growtopiagame.com/Growtopia-Installer.exe\n";
-            str += fmt::format("port|{}\n", Configuration::GetBasePort());
-            str += fmt::format("loginurl|{}\n", Configuration::GetLoginUrl);
+            str += fmt::format("port|17091\n");
+            str += fmt::format("loginurl|login-skip.yoruakio.tech\n");
             str += "type|1\n";
-            str += fmt::format("#maint|{}\n", Configuration::GetMaintenance);
+            str += fmt::format("#maint|Server is under maintenance.\n");
             str += "meta|ignoremeta\n";
             str += "RTENDMARKERBS1001";
         }
 
-        response.set_content(str, "text/html");
+        response.set_content(str, "text/plain");
         Logger::Print(INFO, "Response sent: \n{}", str);
     });
 
