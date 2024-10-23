@@ -57,6 +57,14 @@ DialogBuilder* DialogBuilder::AddCustomBreak() {
     m_result.append("\nadd_custom_break|");
     return this;
 }
+DialogBuilder* DialogBuilder::AddRawText(const std::string& text) {
+    m_result.append("\n" + text);
+    return this;
+}
+DialogBuilder* DialogBuilder::AddQuickExit() {
+    m_result.append("\nadd_quick_exit|");
+    return this;
+}
 DialogBuilder* DialogBuilder::AddSpacer(eSizeType size) {
     m_result.append(fmt::format("\nadd_spacer|{}|", this->GetSize(size)));
     return this;
