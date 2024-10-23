@@ -9,7 +9,8 @@
 enum eLoggerType{
     INFO,
     WARNING,
-    EXCEPTION
+    EXCEPTION,
+    DEBUG
 };
 
 class Logger {
@@ -22,6 +23,9 @@ public:
         switch (type) {
         case eLoggerType::WARNING: {
             spdlog::warn(fmt::vformat(format, fmt::make_format_args(args...)));
+        } break;
+        case eLoggerType::DEBUG: {
+            spdlog::debug(fmt::vformat(format, fmt::make_format_args(args...)));
         } break;
         case eLoggerType::EXCEPTION: {
             spdlog::error(fmt::vformat(format, fmt::make_format_args(args...)));
