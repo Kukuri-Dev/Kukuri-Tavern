@@ -1,6 +1,7 @@
 #include <Player/PlayerDialog/PlayerDialog.hpp>
 #include <ENetWrapper/ENetWrapper.hpp>
 #include <Manager/Item/ItemComponent.hpp>
+#include <Logger/Logger.hpp>
 
 PlayerDialog::PlayerDialog() {
     m_pPeer = nullptr;
@@ -35,6 +36,8 @@ void PlayerDialog::Send(eDialogTypes eType, TextParse data) {
             ->AddTextInputPassword("verify_password", "Password Verify ", data.Get("verify_password"), 18)
             ->AddSpacer()
             ->EndDialog("growid_apply", "Cancel", "`wGet a GrowID``");
+
+        Logger::Print(DEBUG, "Dialog content: {}", db.Get());
     } break;
     default:
         break;
